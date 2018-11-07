@@ -18,11 +18,7 @@ if len(listOfDataSet) == len(listOfSkinMask):
         for i in range(x):
             for j in range(y):
 
-                pixel = {
-                    'a': a[i][j],
-                    'b': b[i][j],
-                    'probability':4
-                }
+
 
 
 
