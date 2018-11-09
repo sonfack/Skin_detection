@@ -9,7 +9,7 @@ class ImgProcessing:
 
     def __init__(self, image, imageMask):
         self.imgMatrix = cv2.imread(image)
-        self.width, self.height =  self.imgMatrix.shape[:2]
+        self.width, self.height = self.imgMatrix.shape[:2]
         self.imageMaskMatrix = cv2.GaussianBlur(cv2.imread(imageMask),(5,5),0)
 
     """
@@ -45,7 +45,7 @@ class ImgProcessing:
 
 
     """
-        Get a channel color unique values 
+        Get a b channel color unique values 
     """
     def getSetABChannelSkinValues(self):
         setOfAChannelSkinValues = []
@@ -57,14 +57,29 @@ class ImgProcessing:
         return setOfAChannelSkinValues
 
     """
+        Get a b channel color unique values 
+    """
+
+    def getSetABChannelNonSkinValues(self):
+        setOfAChannelSkinValues = []
+        Lab = self.convertToLab()
+        l, a, b = cv2.split(Lab)
+        for pixel in self.listOfNonSkinPixel:
+            print(pixel)
+            setOfAChannelSkinValues.append({'a': a[pixel['x']][pixel['y']], 'b': b[pixel['x']][pixel['y']]})
+        return setOfAChannelSkinValues
+
+
+    """
         Skin pixel probabilities 
     
     """
-    def getSkinPixelProbabilities(self, a, b):
+    def getPixelProbabilities(self, a, b):
         count = 0
         for ab in self.getSetABChannelSkinValues():
             if ab['a'] == a and ab['b'] == b :
                 count = count + 1
         return count/(self.height*self.width)
+
 
 

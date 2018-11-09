@@ -9,6 +9,7 @@ pathDataSet = "./data/set/"
 pathSkinMaskSet = "./data/skin_mask/"
 pathNotSkingMaskSet = "./data/non_skin_mask/"
 outputSkinModelFile = "output/skinModel.txt"
+outputNonSkinModelFile = "output/nonSkinModel.txt"
 
 # list of ground skin ground images
 listOfSkinMask = listdir(pathSkinMaskSet)
@@ -58,7 +59,16 @@ def main():
                         for ab in listSkinAB:
                             fileObject.write(
                                 str(ab['a']) + " " + str(ab['b']) + " " + str(
-                                    IMAGE.getSkinPixelProbabilities(ab['a'], ab['b'])))
+                                    IMAGE.getPixelProbabilities(ab['a'], ab['b'])))
+                            fileObject.write(str("\n"))
+                        fileObject.close()
+                        fileObject  = open(os.path.join(fileDir, outputNonSkinModelFile), "a")
+                        IMAGE.getNonSkinPixel()
+                        listNonSkinAB = IMAGE.getSetABChannelNonSkinValues()
+                        for ab in listNonSkinAB:
+                            fileObject.write(
+                                str(ab['a']) + " " + str(ab['b']) + " " + str(
+                                    IMAGE.getPixelProbabilities(ab['a'], ab['b'])))
                             fileObject.write(str("\n"))
                         fileObject.close()
 
