@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-
 """
     Image processing class 
 """
@@ -10,7 +9,7 @@ class ImgProcessing:
 
     def __init__(self, image, imageMask):
         self.imgMatrix = cv2.imread(image)
-        self.width, self.height =  self.imgMatrix.shape
+        self.width, self.height =  self.imgMatrix.shape[:2]
         self.imageMaskMatrix = cv2.imread(imageMask)
 
     """
@@ -24,7 +23,9 @@ class ImgProcessing:
     """
     def getSkinPixel(self):
         R, G, B = cv2.split(self.imageMaskMatrix)
+        print("Get skin pixel")
         for i in range(self.width):
+            print(i)
             for j in range(self.height):
                 if R[i][j] == 255 and G[i][j] == 255 and B[i][j] == 255:
                     self.listOfSkinPixel.append({'x':i, 'y':j})
@@ -34,8 +35,10 @@ class ImgProcessing:
         Returns a list of non Skin pixels 
     """
     def getNonSkinPixel(self, ):
+        print("Get non skin pixel")
         R, G, B = cv2.split(self.imageMaskMatrix)
         for i in range(self.width):
+            print(i)
             for j in range(self.height):
                 if R[i][j] == 0 and G[i][j] == 0 and B[i][j] == 0:
                     self.listOfNonSkinPixel.append({'x': i, 'y': j})
@@ -49,7 +52,8 @@ class ImgProcessing:
         Lab = self.convertToLab()
         l, a, b = cv2.split(Lab)
         for pixel in self.listOfSkinPixel:
-            setOfAChannelSkinValues.append({'a':a[pixel.x][pixel.y], 'b':b[pixel.x][pixel.y]})
+            print(pixel)
+            setOfAChannelSkinValues.append({'a':a[pixel['x']][pixel['y']], 'b':b[pixel['x']][pixel['y']]})
         return setOfAChannelSkinValues
 
     """
@@ -59,7 +63,7 @@ class ImgProcessing:
     def getSkinPixelProbabilities(self, a, b):
         count = 0
         for ab in self.getSetABChannelSkinValues():
-            if ab.a == a and ab.b == b :
+            if ab['a'] == a and ab['b'] == b :
                 count = count + 1
         return count/(self.height*self.width)
 
