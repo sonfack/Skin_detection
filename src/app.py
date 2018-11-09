@@ -50,8 +50,15 @@ def main():
                                               os.path.join(fileDir, "data/skin_mask/" + ground))
                         print(IMAGE.width)
                         print(IMAGE.height)
-                        #cv2.imshow('original', IMAGE.imgMatrix)
-                        #cv2.imshow('ground', IMAGE.imageMaskMatrix)
+
+                        IMAGE.getNonSkinPixel()
+                        listNonSkinAB = IMAGE.getSetABChannelNonSkinValues()
+                        fileObject = open(os.path.join(fileDir, outputNonSkinModelFile), "a")
+                        for ab in listNonSkinAB:
+                            fileObject.write(
+                                str(ab['a']) + " " + str(ab['b']) + " " + str(IMAGE.getNonSkinPixelProbabilities(ab['a'], ab['b'])))
+                            fileObject.write(str("\n"))
+                        fileObject.close()
 
                         IMAGE.getSkinPixel()
                         listSkinAB = IMAGE.getSetABChannelSkinValues()
@@ -59,18 +66,10 @@ def main():
                         for ab in listSkinAB:
                             fileObject.write(
                                 str(ab['a']) + " " + str(ab['b']) + " " + str(
-                                    IMAGE.getPixelProbabilities(ab['a'], ab['b'])))
+                                    IMAGE.getSkinPixelProbabilities(ab['a'], ab['b'])))
                             fileObject.write(str("\n"))
                         fileObject.close()
-                        fileObject  = open(os.path.join(fileDir, outputNonSkinModelFile), "a")
-                        IMAGE.getNonSkinPixel()
-                        listNonSkinAB = IMAGE.getSetABChannelNonSkinValues()
-                        for ab in listNonSkinAB:
-                            fileObject.write(
-                                str(ab['a']) + " " + str(ab['b']) + " " + str(
-                                    IMAGE.getPixelProbabilities(ab['a'], ab['b'])))
-                            fileObject.write(str("\n"))
-                        fileObject.close()
+
 
         # DETECT SKIN
         elif str(choice) == str(2):

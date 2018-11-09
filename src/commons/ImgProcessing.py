@@ -74,12 +74,17 @@ class ImgProcessing:
         Skin pixel probabilities 
     
     """
-    def getPixelProbabilities(self, a, b):
+    def getSkinPixelProbabilities(self, a, b):
         count = 0
         for ab in self.getSetABChannelSkinValues():
             if ab['a'] == a and ab['b'] == b :
                 count = count + 1
         return count/(self.height*self.width)
 
-
+    def getNonSkinPixelProbabilities(self, a, b):
+        count = 0
+        for ab in self.getSetABChannelNonSkinValues():
+            if ab['a'] == a and ab['b'] == b :
+                count = count + 1
+        return count/(self.height*self.width)
 
