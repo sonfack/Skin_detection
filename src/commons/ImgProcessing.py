@@ -10,7 +10,7 @@ class ImgProcessing:
     def __init__(self, image, imageMask):
         self.imgMatrix = cv2.imread(image)
         self.width, self.height =  self.imgMatrix.shape[:2]
-        self.imageMaskMatrix = cv2.imread(imageMask)
+        self.imageMaskMatrix = cv2.GaussianBlur(cv2.imread(imageMask),(5,5),0)
 
     """
         Create Image in the Lab color space 
