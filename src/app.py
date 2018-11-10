@@ -41,56 +41,64 @@ def main():
         if str(choice) == str(1):
             # Look for images and their corresponding ground image / mask
             print("Total image to learn : "+str(len(listOfDataSet)))
+
             for img in listOfDataSet:
                 splitImg = img.split('.')
+                print(splitImg)
                 for ground in listOfSkinMask:
-                    if splitImg[0] in ground:
+                    splitGrd = ground.split('.')
+
+                    if splitImg[0] in splitGrd[0] and len(splitImg[0]) == len(splitGrd[0]):
                         print(img + "====" + ground)
+
                         IMAGE = ImgProcessing(os.path.join(fileDir, "data/set/" + img),
                                               os.path.join(fileDir, "data/skin_mask/" + ground))
                         print(IMAGE.width)
                         print(IMAGE.height)
-
                         IMAGE.getNonSkinPixel()
                         listNonSkinAB = IMAGE.getSetABChannelNonSkinValues()
-
-
+                        fileObject = open(os.path.join(fileDir, outputNonSkinModelFile), "a+")
+                        fileObject.close()
                         for ab in listNonSkinAB:
                             exist = False
-                            fileObject = open(os.path.join(fileDir, outputNonSkinModelFile), "a+")
-                            for line in fileObject.readlines():
-                                newline = line.split()
-                                if len(newline) > 0 and str(newline[0]) == str(ab['a']) and str(newline[1]) == str(ab['b']):
-                                    print(str(newline[0])+' == '+str(ab['a'])+' and '+str(newline[1])+' == '+str(ab['b']))
-                                    existe = True
-                                    break
-                            fileObject.close()
-                            print(exist)
-                            exit()
-                            if exist == False :
+                            with open(os.path.join(fileDir, outputNonSkinModelFile), "r+") as fileObject:
+                                for line in fileObject:
+                                    newline = line.split()
+                                    print(newline)
+                                    print(ab['a'])
+                                    print(ab['b'])
+                                    if len(newline) > 0 and str(newline[0]) == str(ab['a']) and str(newline[1] == str(ab['b'])):
+                                        exist = True
+
+                            if not exist:
                                 fileObject = open(os.path.join(fileDir, outputNonSkinModelFile), "a+")
                                 fileObject.write(
                                     str(ab['a']) + " " + str(ab['b']) + " " + str(IMAGE.getNonSkinPixelProbabilities(ab['a'], ab['b'])))
                                 fileObject.write(str("\n"))
                                 fileObject.close()
-
+                        '''
                         IMAGE.getSkinPixel()
                         listSkinAB = IMAGE.getSetABChannelSkinValues()
+                        fileObject = open(os.path.join(fileDir, outputNonSkinModelFile), "a+")
+                        fileObject.close()
                         for ab in listSkinAB:
                             exist = False
-                            fileObject = open(os.path.join(fileDir, outputNonSkinModelFile), "a+")
-                            for line in fileObject.readlines():
-                                newline = line.split()
-                                if len(newline)> 0 and str(newline[0]) == str(ab['a']) and str(newline[1]) == str(ab['b']):
-                                    exist = True
-                                    break
+                            with open(os.path.join(fileDir, outputSkinModelFile), "r+") as fileObject:
+                                for line in fileObject:
+                                    newline = line.split()
+                                    print(newline)
+                                    print(ab['a'])
+                                    print(ab['b'])
+                                    if len(newline) > 0 and str(newline[0]) == str(ab['a']) and str(
+                                            newline[1] == str(ab['b'])):
+                                        exist = True
+
                             if not exist:
                                 fileObject.write(
-                                    str(ab['a']) + " " + str(ab['b']) + " " + str(
-                                        IMAGE.getSkinPixelProbabilities(ab['a'], ab['b'])))
+                                    str(ab['a']) + " " + str(ab['b']) + " " + str(IMAGE.getSkinPixelProbabilities(ab['a'], ab['b'])))
                                 fileObject.write(str("\n"))
                             fileObject.close()
-
+                        '''
 
         # DETECT SKIN
         elif str(choice) == str(2):
