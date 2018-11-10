@@ -29,7 +29,7 @@ class SkinDetection:
                 #print("a"+str(ca))
                 #print("b" + str(cb))
                 fileObject = open(self.skinModel, "r+")
-                count = count +1
+                count = count + 1
                 #print("parcours "+str(count))
                 for line in fileObject.readlines():
                     newline = line.split()
@@ -40,6 +40,7 @@ class SkinDetection:
                         R[i][j] = 255
                         G[i][j] = 255
                         B[i][j] = 255
+                        break
                 fileObject.close()
                 if count % 50000 == 0:
                     result = cv2.merge([R, G, B])
@@ -66,6 +67,7 @@ class SkinDetection:
                     newline = line.split()
                     if str(newline[0]) == str(ca) and str(newline[1]) == str(cb):
                         skinProbability = newline[2]
+                        break
                 fileObject.close()
 
                 fileObject = open(self.nonSkinModel, "r+")
@@ -74,6 +76,7 @@ class SkinDetection:
                     newline = line.split()
                     if str(newline[0]) == str(ca) and str(newline[1]) == str(cb):
                         nonSkinProbability = newline[2]
+                        break
                 fileObject.close()
 
                 if float(skinProbability) / float(nonSkinProbability) > theta:

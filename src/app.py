@@ -53,22 +53,43 @@ def main():
 
                         IMAGE.getNonSkinPixel()
                         listNonSkinAB = IMAGE.getSetABChannelNonSkinValues()
-                        fileObject = open(os.path.join(fileDir, outputNonSkinModelFile), "a")
+
+
                         for ab in listNonSkinAB:
-                            fileObject.write(
-                                str(ab['a']) + " " + str(ab['b']) + " " + str(IMAGE.getNonSkinPixelProbabilities(ab['a'], ab['b'])))
-                            fileObject.write(str("\n"))
-                        fileObject.close()
+                            exist = False
+                            fileObject = open(os.path.join(fileDir, outputNonSkinModelFile), "a+")
+                            for line in fileObject.readlines():
+                                newline = line.split()
+                                if len(newline) > 0 and str(newline[0]) == str(ab['a']) and str(newline[1]) == str(ab['b']):
+                                    print(str(newline[0])+' == '+str(ab['a'])+' and '+str(newline[1])+' == '+str(ab['b']))
+                                    existe = True
+                                    break
+                            fileObject.close()
+                            print(exist)
+                            exit()
+                            if exist == False :
+                                fileObject = open(os.path.join(fileDir, outputNonSkinModelFile), "a+")
+                                fileObject.write(
+                                    str(ab['a']) + " " + str(ab['b']) + " " + str(IMAGE.getNonSkinPixelProbabilities(ab['a'], ab['b'])))
+                                fileObject.write(str("\n"))
+                                fileObject.close()
 
                         IMAGE.getSkinPixel()
                         listSkinAB = IMAGE.getSetABChannelSkinValues()
-                        fileObject = open(os.path.join(fileDir, outputSkinModelFile), "a")
                         for ab in listSkinAB:
-                            fileObject.write(
-                                str(ab['a']) + " " + str(ab['b']) + " " + str(
-                                    IMAGE.getSkinPixelProbabilities(ab['a'], ab['b'])))
-                            fileObject.write(str("\n"))
-                        fileObject.close()
+                            exist = False
+                            fileObject = open(os.path.join(fileDir, outputNonSkinModelFile), "a+")
+                            for line in fileObject.readlines():
+                                newline = line.split()
+                                if len(newline)> 0 and str(newline[0]) == str(ab['a']) and str(newline[1]) == str(ab['b']):
+                                    exist = True
+                                    break
+                            if not exist:
+                                fileObject.write(
+                                    str(ab['a']) + " " + str(ab['b']) + " " + str(
+                                        IMAGE.getSkinPixelProbabilities(ab['a'], ab['b'])))
+                                fileObject.write(str("\n"))
+                            fileObject.close()
 
 
         # DETECT SKIN
