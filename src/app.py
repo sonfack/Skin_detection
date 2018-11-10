@@ -67,8 +67,9 @@ def main():
                                     print(newline)
                                     print(ab['a'])
                                     print(ab['b'])
-                                    if len(newline) > 0 and str(newline[0]) == str(ab['a']) and str(newline[1] == str(ab['b'])):
+                                    if len(newline) > 0 and str(newline[0]) == str(ab['a']) and str(newline[1] == str(ab['b'])) and str(newline[2]) == str(IMAGE.getNonSkinPixelProbabilities(ab['a'], ab['b'])):
                                         exist = True
+                                        break
 
                             if not exist:
                                 fileObject = open(os.path.join(fileDir, outputNonSkinModelFile), "a+")
@@ -89,9 +90,9 @@ def main():
                                     print(newline)
                                     print(ab['a'])
                                     print(ab['b'])
-                                    if len(newline) > 0 and str(newline[0]) == str(ab['a']) and str(
-                                            newline[1] == str(ab['b'])):
+                                    if len(newline) > 0 and str(newline[0]) == str(ab['a']) and str(newline[1] == str(ab['b'])) and str(newline[2]) == str(IMAGE.getSkinPixelProbabilities(ab['a'], ab['b'])):
                                         exist = True
+                                        break
 
                             if not exist:
                                 fileObject.write(
