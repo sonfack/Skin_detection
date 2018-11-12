@@ -26,14 +26,14 @@ fileDir = os.path.dirname(os.path.realpath('__file__'))
 def menu():
     print("\n\n")
     print("0 TO QUIT")
-    print("1 TO CREATE A NEW MODEL")
+    print("0.01 TO CREATE A NEW MODEL")
     print("2 DETECT SKIN")
     print("\n")
 
 def submenu():
     print("\n\n")
     print("0 TO QUIT")
-    print("1 DO SKIN DETECTION USING ONLY SKIN MODEL")
+    print("0.01 DO SKIN DETECTION USING ONLY SKIN MODEL")
     print("2 DO SKIN DETECTION USING SKIN MODEL AND NON SKIN MODEL")
     print("\n")
 
@@ -124,9 +124,9 @@ def main():
                 detection = SkinDetection("./data/set/7.jpg", os.path.join(fileDir, outputSkinModelFile), nonSkinModeFile=None)
                 detection.detectSkin()
             elif str(choice) == str(2):
-                detection = SkinDetection("./data/set/7.jpg", os.path.join(fileDir, outputSkinModelFile),
+                detection = SkinDetection("./data/set/4.jpg", os.path.join(fileDir, outputSkinModelFile),
                                           nonSkinModeFile= os.path.join(fileDir, outputNonSkinModelFile))
-                detection.detectSkinCompareProbability(theta=0.01)
+                detection.detectSkinCompareProbability(theta=0.001)
             elif str(choice) == str(0):
                 break
             else:

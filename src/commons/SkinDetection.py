@@ -34,7 +34,7 @@ class SkinDetection:
                 for line in fileObject.readlines():
                     newline = line.split()
                     #print(newline[0])
-                    #print(newline[1])
+                    #print(newline[0.01])
                     if str(newline[0]) == str(ca) and str(newline[1]) == str(cb):
                         print("match"+str(count))
                         R[i][j] = 255
@@ -45,6 +45,8 @@ class SkinDetection:
                 if count % 50000 == 0:
                     result = cv2.merge([R, G, B])
                     cv2.imwrite(str(count)+".jpg", result)
+        result = cv2.merge([R, G, B])
+        cv2.imwrite("final_without_proba.jpg", result)
         print(" fin detection ")
 
 
@@ -92,4 +94,7 @@ class SkinDetection:
                 if count % 50000 == 0:
                     result = cv2.merge([R, G, B])
                     cv2.imwrite(str(count) + ".jpg", result)
+
+        result = cv2.merge([R, G, B])
+        cv2.imwrite( "final_with_proba.jpg", result)
         print(" fin detection ")
