@@ -56,6 +56,7 @@ class ImgProcessing:
             setOfAChannelSkinValues.append({'a':a[pixel['x']][pixel['y']], 'b':b[pixel['x']][pixel['y']]})
         return setOfAChannelSkinValues
 
+
     """
         Get a b channel color unique values 
     """
@@ -81,6 +82,10 @@ class ImgProcessing:
                 count = count + 1
         return count/(self.height*self.width)
 
+    """
+      Non Skin pixel probabilities 
+
+    """
     def getNonSkinPixelProbabilities(self, a, b):
         count = 0
         for ab in self.getSetABChannelNonSkinValues():

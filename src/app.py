@@ -30,6 +30,14 @@ def menu():
     print("2 DETECT SKIN")
     print("\n")
 
+def submenu():
+    print("\n\n")
+    print("0 TO QUIT")
+    print("1 DO SKIN DETECTION USING ONLY SKIN MODEL")
+    print("2 DO SKIN DETECTION USING SKIN MODEL AND NON SKIN MODEL")
+    print("\n")
+
+
 def main():
     menu()
     choiceList = [0, 1, 2]
@@ -58,6 +66,8 @@ def main():
                         IMAGE.getNonSkinPixel()
                         listNonSkinAB = IMAGE.getSetABChannelNonSkinValues()
                         fileObject = open(os.path.join(fileDir, outputNonSkinModelFile), "a+")
+                        #fileObject.write(img + "====" + ground)
+                        #fileObject.write("\n")
                         fileObject.close()
                         for ab in listNonSkinAB:
                             exist = False
@@ -77,7 +87,7 @@ def main():
                                     str(ab['a']) + " " + str(ab['b']) + " " + str(IMAGE.getNonSkinPixelProbabilities(ab['a'], ab['b'])))
                                 fileObject.write(str("\n"))
                                 fileObject.close()
-                        '''
+
                         IMAGE.getSkinPixel()
                         listSkinAB = IMAGE.getSetABChannelSkinValues()
                         fileObject = open(os.path.join(fileDir, outputNonSkinModelFile), "a+")
@@ -99,12 +109,31 @@ def main():
                                     str(ab['a']) + " " + str(ab['b']) + " " + str(IMAGE.getSkinPixelProbabilities(ab['a'], ab['b'])))
                                 fileObject.write(str("\n"))
                             fileObject.close()
-                        '''
+
 
         # DETECT SKIN
         elif str(choice) == str(2):
-            detection = SkinDetection("./data/set/5.jpg", os.path.join(fileDir, outputSkinModelFile), nonSkinModeFile=None)
-            detection.detectSkin()
+            submenu()
+            subchoice = [0,1,2]
+            choice = int(input('Enter you action skin detection : '))
+            while not choice in subchoice:
+                submenu()
+                choice = int(input('Enter you action skin detection : '))
+
+            if str(choice) == str(1):
+                detection = SkinDetection("./data/set/7.jpg", os.path.join(fileDir, outputSkinModelFile), nonSkinModeFile=None)
+                detection.detectSkin()
+            elif str(choice) == str(2):
+                detection = SkinDetection("./data/set/7.jpg", os.path.join(fileDir, outputSkinModelFile),
+                                          nonSkinModeFile= os.path.join(fileDir, outputNonSkinModelFile))
+                detection.detectSkinCompareProbability(theta=0.01)
+            elif str(choice) == str(0):
+                break
+            else:
+                print("\n\n\nUnknown choice\n\n\n")
+
+        elif str(choice) == str(0):
+            break
         else:
             print("\n\nUnKnown choice\n\n")
 

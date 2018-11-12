@@ -8,7 +8,7 @@ class SkinDetection:
         if not nonSkinModeFile is None:
             self.nonSkinModel = nonSkinModeFile
         else:
-            self.nonSkinModel = ""
+            self.nonSkinModel = nonSkinModeFile
         self.imgMatrix = cv2.imread(image)
 
 
@@ -79,10 +79,16 @@ class SkinDetection:
                         break
                 fileObject.close()
 
-                if float(skinProbability) / float(nonSkinProbability) > theta:
-                    R[i][j] = 255
-                    G[i][j] = 255
-                    B[i][j] = 255
+                if float(nonSkinProbability) > 0 :
+                    if float(skinProbability) / float(nonSkinProbability) > theta:
+                        R[i][j] = 255
+                        G[i][j] = 255
+                        B[i][j] = 255
+                    elif float(nonSkinProbability) == 0:
+                        R[i][j] = 255
+                        G[i][j] = 255
+                        B[i][j] = 255
+
                 if count % 50000 == 0:
                     result = cv2.merge([R, G, B])
                     cv2.imwrite(str(count) + ".jpg", result)
